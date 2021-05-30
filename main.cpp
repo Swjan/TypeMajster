@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "Dictionary.h"
+#include "GameControl.h"
 
 
 
@@ -10,9 +11,11 @@ int main()
  Dictionary words;
   words.loadWords();
 
-  for(int i = 0;i<500;i++){
-    std::cout<<"slowo: "<<words.getWord('e')<<std::endl;
-  }
+  words.debug_dumpVector('e');
+
+GameControl ctrl;
+ctrl.loadScores();
+ctrl.debug_printScores('e');
 
 
 

@@ -61,7 +61,7 @@ std::string Dictionary::getWord(char diff){
     return hard[index_picker(defEngine)];
   }
 
-  return "_____ERROR____";
+  return "____ERROR____";
 }
 
 void Dictionary::debug_dumpVector(char diff){
