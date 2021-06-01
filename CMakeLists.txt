@@ -5,7 +5,7 @@ project (TYPEMAJSTER)
 #####################################################################
 # Tu wymień wszystkie pliki .cpp, z których składa się projekt (rozdzielone spacją)
 
-set ( SOURCES main.cpp Dictionary.cpp Dictionary.h GameControl.cpp GameControl.h)
+set ( SOURCES main.cpp Dictionary.cpp Dictionary.h GameControl.cpp GameControl.h TypeSFMLView.cpp TypeSFMLView.h)
 
 #####################################################################
 

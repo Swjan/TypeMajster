@@ -87,3 +87,56 @@ void GameControl::debug_printScores(char diff)const{
     }
   }
 }
+
+void GameControl::sortScores(){
+
+
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9-i; j++){
+      if (scoresEasy[j].score < scoresEasy[j+1].score){
+        Player temp = scoresEasy[j];
+        scoresEasy[j] = scoresEasy[j+1];
+        scoresEasy[j+1] = temp;
+      }   
+    }
+  }
+
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9-i; j++){
+      if (scoresMedium[j].score < scoresMedium[j+1].score){
+        Player temp = scoresMedium[j];
+        scoresMedium[j] = scoresMedium[j+1];
+        scoresMedium[j+1] = temp;
+      }   
+    }
+  }
+
+  for (int i = 0; i < 9; i++){
+    for (int j = 0; j < 9-i; j++){
+      if (scoresHard[j].score < scoresHard[j+1].score){
+        Player temp = scoresHard[j];
+        scoresHard[j] = scoresHard[j+1];
+        scoresHard[j+1] = temp;
+      }   
+    }
+  }
+  
+}
+
+Player* GameControl::getScores(char diff){
+  if(diff == 'e'){
+    return scoresEasy;
+  }
+  if(diff == 'm'){
+    return scoresMedium;
+  }
+  if(diff == 'h'){
+    return scoresHard;
+  }
+}
+
+void GameControl::setState(GameState deltaState){
+  state = deltaState;
+}
+
+

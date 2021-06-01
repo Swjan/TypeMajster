@@ -15,7 +15,6 @@ public:
   void loadWords();
   std::string getWord(char diff);
   void debug_dumpVector(char diff);
-
 };
 
 

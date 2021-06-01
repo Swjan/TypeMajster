@@ -3,27 +3,31 @@
 #include "SFML/Window.hpp"
 #include "Dictionary.h"
 #include "GameControl.h"
+#include "TypeSFMLView.h"
 
 
 
 int main()
 {
- Dictionary words;
+  Dictionary words;
   words.loadWords();
 
-  words.debug_dumpVector('e');
 
-GameControl ctrl;
-ctrl.loadScores();
-ctrl.debug_printScores('e');
+  GameControl ctrl;
+  ctrl.loadScores();
+  ctrl.sortScores();
 
-
-
+  TypeSFMLView view(ctrl, words);
 
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Grafika w C++/SFML");
+
+
+
+
+
+	sf::RenderWindow window(sf::VideoMode(800, 600), "TypeMajster");
     window.setVerticalSyncEnabled(false);
-    window.setFramerateLimit(1);
+    window.setFramerateLimit(3);
 
     while (window.isOpen())
     {
@@ -35,6 +39,7 @@ ctrl.debug_printScores('e');
         }
         
         window.clear();
+        view.drawMenu(window);
         window.display();
     }
 

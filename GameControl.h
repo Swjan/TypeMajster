@@ -23,6 +23,9 @@ public:
   GameControl();
   void loadScores();
   void debug_printScores(char diff) const;
+  void sortScores();
+  Player* getScores(char diff);
+  void setState(GameState deltaState);
 
 
 
