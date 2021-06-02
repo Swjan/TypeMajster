@@ -6,11 +6,17 @@ class TypeSFMLView
 GameControl & control;
 Dictionary & dictionary;
 
-sf::RectangleShape field;
+sf::RectangleShape fieldMenuE;
+sf::RectangleShape fieldMenuM;
+sf::RectangleShape fieldMenuH;
+sf::RectangleShape fieldMenuS;
 sf::Text text;
+sf::Text scoreboardText;
 
 
 sf::Font font;
+
+void centerOriginText(sf::Text & t);
 
 public:
   TypeSFMLView(GameControl & c , Dictionary & d);
@@ -18,7 +24,7 @@ public:
   void drawScoreboard(sf::RenderWindow & win);
 	void drawRunning (sf::RenderWindow & win);
   void drawFinished (sf::RenderWindow & win);
-  void handleEvent(sf::Event & event);
+  void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
 };
 
 #endif

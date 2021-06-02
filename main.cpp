@@ -36,10 +36,11 @@ int main()
         {
             if (event.type == sf::Event::Closed) 
                 window.close();
+            view.handleEventMenu(event, window);
         }
         
         window.clear();
-        view.drawMenu(window);
+        view.drawScoreboard(window);
         window.display();
     }
 
