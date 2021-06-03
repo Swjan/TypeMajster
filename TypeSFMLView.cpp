@@ -35,6 +35,10 @@ TypeSFMLView::TypeSFMLView(GameControl &c, Dictionary &d): control(c), dictionar
   fieldMenuS.setOutlineThickness(1);
   fieldMenuS.setOutlineColor(sf::Color(110,110,110));
 
+  fieldScoreboardM.setFillColor(sf::Color(60,60,60));
+  fieldScoreboardM.setOutlineThickness(1);
+  fieldScoreboardM.setOutlineColor(sf::Color(110,110,110));
+
 }
 
 void TypeSFMLView::centerOriginText(sf::Text & t){
@@ -143,6 +147,15 @@ void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
     win.draw(scoreboardText);
   }
 
+  text.setString("MENU");
+  centerOriginText(text);
+  text.setPosition(800/2, 500);
+
+  fieldScoreboardM.setSize(sf::Vector2f(text.getLocalBounds().width+10,text.getLocalBounds().height+10));
+  fieldScoreboardM.setOrigin(fieldScoreboardM.getLocalBounds().left + fieldScoreboardM.getLocalBounds().width/2, fieldScoreboardM.getLocalBounds().top + fieldScoreboardM.getLocalBounds().height/2);
+  fieldScoreboardM.setPosition(text.getPosition());
+  win.draw(fieldScoreboardM);
+  win.draw(text);
 
 }
 
@@ -161,7 +174,17 @@ void TypeSFMLView::handleEventMenu(sf::Event & event, sf::RenderWindow & win){
         std::cout << "Hard shape contains mouse position." << std::endl;
       }
       if (fieldMenuS.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
-        std::cout << "Scoreboard contains mouse position." << std::endl;
+        control.setState(SCOREBOARD);
+      }
+    }
+  }
+}
+
+void TypeSFMLView::handleEventScoreboard(sf::Event & event, sf::RenderWindow & win){
+  if (event.type == sf::Event::MouseButtonPressed){
+    if (event.mouseButton.button == sf::Mouse::Left){
+      if (fieldScoreboardM.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
+        control.setState(MENU);
       }
     }
   }

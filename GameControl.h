@@ -26,6 +26,7 @@ public:
   void sortScores();
   Player* getScores(char diff);
   void setState(GameState deltaState);
+  GameState getState() const;
 
 
 

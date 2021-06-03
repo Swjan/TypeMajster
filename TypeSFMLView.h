@@ -10,6 +10,7 @@ sf::RectangleShape fieldMenuE;
 sf::RectangleShape fieldMenuM;
 sf::RectangleShape fieldMenuH;
 sf::RectangleShape fieldMenuS;
+sf::RectangleShape fieldScoreboardM;
 sf::Text text;
 sf::Text scoreboardText;
 
@@ -25,6 +26,8 @@ public:
 	void drawRunning (sf::RenderWindow & win);
   void drawFinished (sf::RenderWindow & win);
   void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
+  void handleEventScoreboard(sf::Event & event, sf::RenderWindow & win);
+
 };
 
 #endif

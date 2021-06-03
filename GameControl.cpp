@@ -139,4 +139,8 @@ void GameControl::setState(GameState deltaState){
   state = deltaState;
 }
 
+GameState GameControl::getState() const{
+  return state;
+}
+
 

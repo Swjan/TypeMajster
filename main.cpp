@@ -31,17 +31,37 @@ int main()
 
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) 
-                window.close();
-            view.handleEventMenu(event, window);
+      sf::Event event;
+      switch(ctrl.getState()){
+      
+        case MENU:{
+          while (window.pollEvent(event))
+          {
+              if (event.type == sf::Event::Closed) 
+                  window.close();
+              view.handleEventMenu(event, window);
+          }
+          
+          window.clear();
+          view.drawMenu(window);
+          window.display();
+          break;
         }
-        
-        window.clear();
-        view.drawScoreboard(window);
-        window.display();
+
+        case SCOREBOARD:{
+          while (window.pollEvent(event))
+          {
+              if (event.type == sf::Event::Closed) 
+                  window.close();
+              view.handleEventScoreboard(event, window);
+          }
+          
+          window.clear();
+          view.drawScoreboard(window);
+          window.display();
+          break;
+        }
+      }
     }
 
   return 0;
