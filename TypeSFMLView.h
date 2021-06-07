@@ -11,8 +11,13 @@ sf::RectangleShape fieldMenuM;
 sf::RectangleShape fieldMenuH;
 sf::RectangleShape fieldMenuS;
 sf::RectangleShape fieldScoreboardM;
+sf::RectangleShape sideBoard;
 sf::Text text;
 sf::Text scoreboardText;
+sf::Text multiplierTextY;
+sf::Text multiplierTextR;
+sf::Vertex lineOne[2];
+sf::Vertex lineTwo[2];
 
 
 sf::Font font;
@@ -23,7 +28,7 @@ public:
   TypeSFMLView(GameControl & c , Dictionary & d);
   void drawMenu(sf::RenderWindow & win);
   void drawScoreboard(sf::RenderWindow & win);
-	void drawRunning (sf::RenderWindow & win);
+	void drawEasy (sf::RenderWindow & win);
   void drawFinished (sf::RenderWindow & win);
   void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
   void handleEventScoreboard(sf::Event & event, sf::RenderWindow & win);

@@ -19,6 +19,15 @@ TypeSFMLView::TypeSFMLView(GameControl &c, Dictionary &d): control(c), dictionar
   scoreboardText.setFont(font);
   scoreboardText.setCharacterSize(15);
 
+  multiplierTextY.setFont(font);
+  multiplierTextY.setCharacterSize(15);
+  multiplierTextY.setFillColor(sf::Color(128, 119, 0));
+
+  multiplierTextR.setFont(font);
+  multiplierTextR.setCharacterSize(15);
+  multiplierTextR.setFillColor(sf::Color(92, 0, 0));
+
+
   fieldMenuE.setFillColor(sf::Color(60,60,60));
   fieldMenuE.setOutlineThickness(1);
   fieldMenuE.setOutlineColor(sf::Color(110,110,110));
@@ -38,6 +47,12 @@ TypeSFMLView::TypeSFMLView(GameControl &c, Dictionary &d): control(c), dictionar
   fieldScoreboardM.setFillColor(sf::Color(60,60,60));
   fieldScoreboardM.setOutlineThickness(1);
   fieldScoreboardM.setOutlineColor(sf::Color(110,110,110));
+
+  sideBoard.setFillColor(sf::Color(60,60,60));
+
+
+
+  
 
 }
 
@@ -159,13 +174,67 @@ void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
 
 }
 
+void TypeSFMLView::drawEasy(sf::RenderWindow & win){
+
+  lineOne[0].position = sf::Vector2f(0, 200);
+  lineOne[0].color  = sf::Color(128, 119, 0);
+  lineOne[1].position = sf::Vector2f(800, 200);
+  lineOne[1].color = sf::Color(128, 119, 0);
+
+  lineTwo[0].position = sf::Vector2f(0, 400);
+  lineTwo[0].color  = sf::Color(92, 0, 0);
+  lineTwo[1].position = sf::Vector2f(800, 400);
+  lineTwo[1].color = sf::Color(92, 0, 0);
+
+  multiplierTextY.setString("x2");
+  multiplierTextY.setPosition(5,205);
+  win.draw(multiplierTextY);
+
+  multiplierTextR.setString("x3");
+  multiplierTextR.setPosition(5,405);
+  win.draw(multiplierTextR);
+
+  win.draw(lineOne, 2, sf::Lines);
+  win.draw(lineTwo, 2, sf::Lines);
+
+  sideBoard.setSize(sf::Vector2f(800/3,600));
+  sideBoard.setPosition(2*800/3,0);
+  win.draw(sideBoard);
+
+  text.setString("POZIOM:");
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(2*800/3+20,30);
+  win.draw(text);
+
+  text.setString("4");  //placeholder, ma wyświetlać aktualny numer poziomu
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(2*800/3+200,30);
+  win.draw(text);
+
+  text.setString("Wynik:");
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(2*800/3+20,150);
+  win.draw(text);
+
+  text.setString("4");  //placeholder, ma wyświetlać aktualny wynik
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(2*800/3+150,150);
+  win.draw(text);
+
+
+
+
+
+
+}
+
 void TypeSFMLView::handleEventMenu(sf::Event & event, sf::RenderWindow & win){
   if (event.type == sf::Event::MouseButtonPressed)
   {
     if (event.mouseButton.button == sf::Mouse::Left)
     {
       if (fieldMenuE.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
-        std::cout << "Easy shape contains mouse position." << std::endl;
+        control.setState(RUNNING_EASY);
       }
       if (fieldMenuM.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
         std::cout << "Medium shape contains mouse position." << std::endl;
@@ -189,5 +258,9 @@ void TypeSFMLView::handleEventScoreboard(sf::Event & event, sf::RenderWindow & w
     }
   }
 }
+
+
+
+
 
 

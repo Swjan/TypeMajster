@@ -10,6 +10,8 @@ struct Player{
   Player(){};
 };
 
+
+
 enum GameState{ MENU, SCOREBOARD, RUNNING_EASY, RUNNING_MEDIUM, RUNNING_HARD, FINISHED };
 
 
@@ -19,6 +21,7 @@ class GameControl{
   Player scoresEasy[10];
   Player scoresMedium[10];
   Player scoresHard[10];
+
 public:
   GameControl();
   void loadScores();

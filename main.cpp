@@ -61,6 +61,21 @@ int main()
           window.display();
           break;
         }
+
+        case RUNNING_EASY:{
+          while (window.pollEvent(event))
+          {
+              if (event.type == sf::Event::Closed) 
+                  window.close();
+              view.handleEventScoreboard(event, window);
+          }
+          
+          window.clear();
+          view.drawEasy(window);
+          window.display();
+          break;
+
+        }
       }
     }
 
