@@ -191,7 +191,7 @@ void GameControl::updateWords(char diff){
   bool checkSpace = 0;
   
   for(int i = 0; i<fallingWords.size();i++){
-    if(fallingWords[i].y<50){
+    if(fallingWords[i].y<70){
       checkSpace = 1;
     }
   }
@@ -201,19 +201,35 @@ void GameControl::updateWords(char diff){
     checkSpace=0;
   }
 
+  lossCheck();
+
 }
 
 void GameControl::checkWord(std::string typedWord){
-  std::cout<<"Test_init_checkWord"<<std::endl;
-  std::cout<<typedWord<<std::endl;
   for(int i = 0; i<fallingWords.size();i++){
-    std::cout<<typedWord<<std::endl;
-    std::cout<<fallingWords[i].word<<std::endl;
-    std::cout<<fallingWords[i].word.compare(typedWord)<<std::endl;
-//      fallingWords.erase(fallingWords.begin()+i);
-//      std::cout<<"Test_passes_if"<<std::endl;
-//    }
-    //std::cout<<fallingWords[i].word<<std::endl;
+    if(typedWord==fallingWords[i].word){
+      sizeCheck.setString(fallingWords[i].word);
+      if(fallingWords[i].y+sizeCheck.getLocalBounds().height>200){
+        p.score = p.score+1;
+      }
+      if(fallingWords[i].y+sizeCheck.getLocalBounds().height>400){
+        p.score = p.score+1;
+      }
+      p.score = p.score+1;
+      fallingWords.erase(fallingWords.begin()+i);
+    }
   }
 }
 
+int GameControl::getPlayerScore() const{
+  return p.score;
+}
+
+void GameControl::lossCheck(){
+  for(int i=0;i<fallingWords.size();i++){
+    sizeCheck.setString(fallingWords[i].word);
+    if(fallingWords[i].y+sizeCheck.getLocalBounds().height>600){
+      setState(FINISHED);
+    }
+  }
+}

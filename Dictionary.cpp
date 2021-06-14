@@ -20,7 +20,8 @@ void Dictionary::loadWords(){
 
   std::string str;
     while (std::getline(inFile, str))
-    {
+    { 
+
       if(str.size() > 0 && str.size() <= 11){
         easy.push_back(str);
       }
@@ -37,6 +38,17 @@ void Dictionary::loadWords(){
   std::cout<<"Easy words loaded: "<<easy.size()<<std::endl;
   std::cout<<"Medium words loaded: "<<medium.size()<<std::endl;
   std::cout<<"Hard words loaded: "<<hard.size()<<std::endl;
+
+//usuwanie nexline ze stringów
+  for(int i = 0; i<easy.size(); i++){
+    easy[i].pop_back();
+  }
+  for(int i = 0; i<medium.size(); i++){
+    medium[i].pop_back();
+  }
+  for(int i = 0; i<hard.size(); i++){
+    hard[i].pop_back();
+  }
 
 }
 

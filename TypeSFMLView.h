@@ -33,11 +33,11 @@ public:
   TypeSFMLView(GameControl & c , Dictionary & d);
   void drawMenu(sf::RenderWindow & win);
   void drawScoreboard(sf::RenderWindow & win);
-	void drawEasy (sf::RenderWindow & win);
+	void drawRunning (sf::RenderWindow & win, char diff);
   void drawFinished (sf::RenderWindow & win);
   void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
   void handleEventScoreboard(sf::Event & event, sf::RenderWindow & win);
-  void handleEventEasy(sf::Event & event, sf::RenderWindow & win);
+  void handleEventRunning(sf::Event & event);
 
 };
 

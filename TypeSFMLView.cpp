@@ -184,7 +184,7 @@ void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
 
 }
 
-void TypeSFMLView::drawEasy(sf::RenderWindow & win){
+void TypeSFMLView::drawRunning(sf::RenderWindow & win, char diff){
 
   lineOne[0].position = sf::Vector2f(0, 200);
   lineOne[0].color  = sf::Color(128, 119, 0);
@@ -211,17 +211,31 @@ void TypeSFMLView::drawEasy(sf::RenderWindow & win){
   sideBoard.setPosition(2*800/3,0);
   win.draw(sideBoard);
 
-  text.setString("EASY");
-  text.setOrigin(sf::Vector2f(0,0));
-  text.setPosition(2*800/3+20,30);
-  win.draw(text);
+  if(diff == 'e'){
+    text.setString("EASY");
+    text.setOrigin(sf::Vector2f(0,0));
+    text.setPosition(2*800/3+20,30);
+    win.draw(text);
+  }
+  if(diff == 'm'){
+    text.setString("MEDIUM");
+    text.setOrigin(sf::Vector2f(0,0));
+    text.setPosition(2*800/3+20,30);
+    win.draw(text);
+  }
+  if(diff == 'h'){
+    text.setString("HARD");
+    text.setOrigin(sf::Vector2f(0,0));
+    text.setPosition(2*800/3+20,30);
+    win.draw(text);
+  }
 
   text.setString("Wynik:");
   text.setOrigin(sf::Vector2f(0,0));
   text.setPosition(2*800/3+20,150);
   win.draw(text);
 
-  text.setString("4");  //placeholder, ma wyświetlać aktualny wynik
+  text.setString(std::to_string(control.getPlayerScore())); 
   text.setOrigin(sf::Vector2f(0,0));
   text.setPosition(2*800/3+150,150);
   win.draw(text);
@@ -231,7 +245,7 @@ void TypeSFMLView::drawEasy(sf::RenderWindow & win){
   win.draw(inputBackground);
 
   inputText.setPosition(2*800/3+15,460);
-  inputText.setString(inputWord);
+  inputText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(inputWord));
   win.draw(inputText);
 
 
@@ -246,6 +260,7 @@ void TypeSFMLView::drawEasy(sf::RenderWindow & win){
     fallingWordText.setString(conv);
     fallingWordText.setOrigin(sf::Vector2f(0,0));
     fallingWordText.setPosition(control.getWords()[i].x, control.getWords()[i].y);
+
     win.draw(fallingWordText);
   }
 
@@ -265,10 +280,10 @@ void TypeSFMLView::handleEventMenu(sf::Event & event, sf::RenderWindow & win){
         control.setState(RUNNING_EASY);
       }
       if (fieldMenuM.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
-        std::cout << "Medium shape contains mouse position." << std::endl;
+        control.setState(RUNNING_MEDIUM);
       }
       if (fieldMenuH.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
-        std::cout << "Hard shape contains mouse position." << std::endl;
+        control.setState(RUNNING_HARD);
       }
       if (fieldMenuS.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
         control.setState(SCOREBOARD);
@@ -287,19 +302,95 @@ void TypeSFMLView::handleEventScoreboard(sf::Event & event, sf::RenderWindow & w
   }
 }
 
-void TypeSFMLView::handleEventEasy(sf::Event & event, sf::RenderWindow & win){
-  if (event.type == sf::Event::TextEntered){
-    inputWord += static_cast<char>(event.text.unicode);
-    inputText.setString(inputWord);
-  }
+void TypeSFMLView::handleEventRunning(sf::Event & event){
+
   if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter){
     control.checkWord(inputWord);
     inputWord.clear();
-    inputText.setString(inputWord);
   }
+  //filtracja znaków z utf32 (bo takie zwraca event.text.unicode):
+  //13 - enter (nextline lub coś w tym rodzaju)
+  //261 - ą
+  //263 - ć
+  //8 - backspace
+  //347 - ś
+  //322 - Ł
+  //378 - ź
+  //380 - ż
+  //243 - ó
+  //281 - ę
+  //324 - ń
 
-
-
+  if (event.type == sf::Event::TextEntered){
+    switch(event.text.unicode){
+      case 13:{
+        break;
+      }
+      case 261:{
+        inputWord += "ą";
+        break;
+      }
+      case 263:{
+        inputWord += "ć";
+        break;
+      }
+      case 347:{
+        inputWord += "ś";
+        break;
+      }
+      case 322:{
+        inputWord += "ł";
+        break;
+      }
+      case 378:{
+        inputWord += "ź";
+        break;
+      }
+      case 380:{
+        inputWord += "ż";
+        break;
+      }
+      case 243:{
+        inputWord += "ó";
+        break;
+      }
+      case 281:{
+        inputWord += "ę";
+        break;
+      }
+      case 324:{
+        inputWord += "ń";
+        break;
+      }
+      case 8:{
+// pop_back() wywołany dla pustego stringa rozjeżdża program
+// podobnie pop_back() wywołany tylko raz przy kasowaniu polskiego znaku - usuwa tylko "część" znaku, pozostałość rozjeżdża program przy próbie wpisania następnej litery
+// poniższe wartości do wyłapywania polskich znaków uzyskane za pomocą std::cout<<(int)inputWord.back()-1<<std::endl;
+        if(inputWord.size() == 0){
+          break;
+        }
+        if(inputWord.back()-1==-124 ||  //ą
+           inputWord.back()-1==-122 ||  //ć
+           inputWord.back()-1==-102 ||  //ś
+           inputWord.back()-1==-127 ||  //ł 
+           inputWord.back()-1==-71 ||   //ź
+           inputWord.back()-1==-69 ||   //ż
+           inputWord.back()-1==-78 ||   //ó
+           inputWord.back()-1==-104 ||  //ę
+           inputWord.back()-1==-125  ){ //ń
+            inputWord.pop_back();
+            inputWord.pop_back();
+           }
+        else{
+          inputWord.pop_back();
+        }
+        break;
+      }
+      default:{
+        inputWord += event.text.unicode;
+      }
+    }
+  }
 }
 
 

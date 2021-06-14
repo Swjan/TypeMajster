@@ -30,6 +30,7 @@ class GameControl{
   Player scoresMedium[10];
   Player scoresHard[10];
   void addWord(char diff);
+  void lossCheck();
   sf::Font fontToCheck;
   sf::Text sizeCheck;
   std::default_random_engine defEngineCtrl;
@@ -46,7 +47,7 @@ public:
   std::vector<fallingWord> getWords() const;
   void updateWords(char diff);
   void checkWord(std::string typedWord);
-
+  int getPlayerScore() const;
 
 
 
