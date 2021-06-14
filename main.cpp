@@ -13,7 +13,7 @@ int main()
   words.loadWords();
 
 
-  GameControl ctrl;
+  GameControl ctrl(words);
   ctrl.loadScores();
   ctrl.sortScores();
 
@@ -67,9 +67,9 @@ int main()
           {
               if (event.type == sf::Event::Closed) 
                   window.close();
-              view.handleEventScoreboard(event, window);
+              view.handleEventEasy(event, window);
           }
-          
+          ctrl.updateWords('e');
           window.clear();
           view.drawEasy(window);
           window.display();

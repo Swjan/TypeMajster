@@ -23,15 +23,12 @@ void Dictionary::loadWords(){
     {
       if(str.size() > 0 && str.size() <= 11){
         easy.push_back(str);
-        std::cout<<"easy word loaded"<<std::endl;
       }
       if(str.size() > 11 && str.size() <= 14){
         medium.push_back(str);
-        std::cout<<"medium word loaded"<<std::endl;
       }
       if(str.size() > 14){
         hard.push_back(str);
-        std::cout<<"hard word loaded"<<std::endl;
       }
       
     }

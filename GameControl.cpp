@@ -1,11 +1,22 @@
 #include <iostream>
 #include <fstream>
-
+#include <vector>
+#include <random>
+#include <ctime>
+#include <string.h>
+#include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 #include "GameControl.h"
 
-GameControl::GameControl(){
+GameControl::GameControl(Dictionary & d): dictionary (d){
   state = MENU;
   Player p('e', "Empty", 0);
+  if(! fontToCheck.loadFromFile("../resources/ARIAL.TTF")){
+  abort();
+  }
+  sizeCheck.setFont(fontToCheck);
+  sizeCheck.setCharacterSize(25);
+  defEngineCtrl.seed(time(0));
 }
 
 void GameControl::loadScores(){
@@ -143,4 +154,66 @@ GameState GameControl::getState() const{
   return state;
 }
 
+void GameControl::setPlayerDiff(char diff){
+  p.type = diff;
+}
+
+std::vector<fallingWord> GameControl::getWords() const{
+  return fallingWords;
+}
+
+void GameControl::addWord(char diff){
+  std::string addedString = dictionary.getWord(diff);
+    //    0-533 szerokość 
+  sizeCheck.setString(addedString);
+  sizeCheck.setOrigin(sf::Vector2f(0,0));
+
+  std::uniform_int_distribution<int> x_rand(1,533-sizeCheck.getLocalBounds().width);
+  fallingWord addedWord;
+  addedWord.word = addedString;
+  addedWord.x = x_rand(defEngineCtrl);
+  addedWord.y = 0;
+  fallingWords.push_back(addedWord);
+
+
+}
+
+
+void GameControl::updateWords(char diff){
+  if(fallingWords.size() == 0){
+    addWord(diff);
+  }
+
+  for(int i = 0; i<fallingWords.size();i++){
+    fallingWords[i].y = fallingWords[i].y+10;
+  }
+  
+  bool checkSpace = 0;
+  
+  for(int i = 0; i<fallingWords.size();i++){
+    if(fallingWords[i].y<50){
+      checkSpace = 1;
+    }
+  }
+
+  if(checkSpace == 0){
+    addWord(diff);
+    checkSpace=0;
+  }
+
+}
+
+void GameControl::checkWord(std::string typedWord){
+  std::cout<<"Test_init_checkWord"<<std::endl;
+  std::cout<<typedWord<<std::endl;
+  for(int i = 0; i<fallingWords.size();i++){
+    std::cout<<typedWord<<std::endl;
+    std::cout<<fallingWords[i].word<<std::endl;
+    std::cout<<fallingWords[i].word.compare(typedWord)<<std::endl;
+//      fallingWords.erase(fallingWords.begin()+i);
+//      std::cout<<"Test_passes_if"<<std::endl;
+//    }
+    //std::cout<<fallingWords[i].word<<std::endl;
+  }
+}
 

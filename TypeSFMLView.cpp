@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <codecvt>
+#include <locale>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "Dictionary.h"
@@ -27,6 +29,12 @@ TypeSFMLView::TypeSFMLView(GameControl &c, Dictionary &d): control(c), dictionar
   multiplierTextR.setCharacterSize(15);
   multiplierTextR.setFillColor(sf::Color(92, 0, 0));
 
+  fallingWordText.setFont(font);
+  fallingWordText.setCharacterSize(25);
+
+  inputText.setFont(font);
+  inputText.setCharacterSize(20);
+
 
   fieldMenuE.setFillColor(sf::Color(60,60,60));
   fieldMenuE.setOutlineThickness(1);
@@ -49,6 +57,8 @@ TypeSFMLView::TypeSFMLView(GameControl &c, Dictionary &d): control(c), dictionar
   fieldScoreboardM.setOutlineColor(sf::Color(110,110,110));
 
   sideBoard.setFillColor(sf::Color(60,60,60));
+
+  inputBackground.setFillColor(sf::Color(0,0,0));
 
 
 
@@ -201,14 +211,9 @@ void TypeSFMLView::drawEasy(sf::RenderWindow & win){
   sideBoard.setPosition(2*800/3,0);
   win.draw(sideBoard);
 
-  text.setString("POZIOM:");
+  text.setString("EASY");
   text.setOrigin(sf::Vector2f(0,0));
   text.setPosition(2*800/3+20,30);
-  win.draw(text);
-
-  text.setString("4");  //placeholder, ma wyświetlać aktualny numer poziomu
-  text.setOrigin(sf::Vector2f(0,0));
-  text.setPosition(2*800/3+200,30);
   win.draw(text);
 
   text.setString("Wynik:");
@@ -220,6 +225,29 @@ void TypeSFMLView::drawEasy(sf::RenderWindow & win){
   text.setOrigin(sf::Vector2f(0,0));
   text.setPosition(2*800/3+150,150);
   win.draw(text);
+
+  inputBackground.setSize(sf::Vector2f(800/3-20,40));
+  inputBackground.setPosition(2*800/3+10,450);
+  win.draw(inputBackground);
+
+  inputText.setPosition(2*800/3+15,460);
+  inputText.setString(inputWord);
+  win.draw(inputText);
+
+
+
+
+
+  // rysowanie słów z wektora w GameControl:
+
+  for(int i = 0; i<control.getWords().size();i++){
+    std::wstring conv;
+    conv = std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(control.getWords()[i].word);
+    fallingWordText.setString(conv);
+    fallingWordText.setOrigin(sf::Vector2f(0,0));
+    fallingWordText.setPosition(control.getWords()[i].x, control.getWords()[i].y);
+    win.draw(fallingWordText);
+  }
 
 
 
@@ -257,6 +285,21 @@ void TypeSFMLView::handleEventScoreboard(sf::Event & event, sf::RenderWindow & w
       }
     }
   }
+}
+
+void TypeSFMLView::handleEventEasy(sf::Event & event, sf::RenderWindow & win){
+  if (event.type == sf::Event::TextEntered){
+    inputWord += static_cast<char>(event.text.unicode);
+    inputText.setString(inputWord);
+  }
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter){
+    control.checkWord(inputWord);
+    inputWord.clear();
+    inputText.setString(inputWord);
+  }
+
+
+
 }
 
 

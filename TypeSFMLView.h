@@ -12,12 +12,17 @@ sf::RectangleShape fieldMenuH;
 sf::RectangleShape fieldMenuS;
 sf::RectangleShape fieldScoreboardM;
 sf::RectangleShape sideBoard;
+sf::RectangleShape inputBackground;
 sf::Text text;
 sf::Text scoreboardText;
 sf::Text multiplierTextY;
 sf::Text multiplierTextR;
+sf::Text fallingWordText;
 sf::Vertex lineOne[2];
 sf::Vertex lineTwo[2];
+
+std::string inputWord;
+sf::Text inputText;
 
 
 sf::Font font;
@@ -32,6 +37,7 @@ public:
   void drawFinished (sf::RenderWindow & win);
   void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
   void handleEventScoreboard(sf::Event & event, sf::RenderWindow & win);
+  void handleEventEasy(sf::Event & event, sf::RenderWindow & win);
 
 };
 
