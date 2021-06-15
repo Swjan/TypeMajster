@@ -125,17 +125,28 @@ void TypeSFMLView::drawMenu(sf::RenderWindow & win){
 void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
   text.setString(L"TABELA REKORDÓW");
   centerOriginText(text);
-  text.setPosition(sf::Vector2f(800/2,100));
+  text.setPosition(sf::Vector2f(800/2,50));
   win.draw(text);
 
-
+  text.setString("EASY:");
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(sf::Vector2f(70,100));
+  win.draw(text);
+  text.setString("MEDIUM:");
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(sf::Vector2f(300,100));
+  win.draw(text);
+  text.setString("HARD:");
+  text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(sf::Vector2f(530,100));
+  win.draw(text);
 
   for(int i = 0; i<10; i++){
     scoreboardText.setString(std::to_string(i+1));
     scoreboardText.setPosition(70, 150+i*30);
     win.draw(scoreboardText);
 
-    scoreboardText.setString(control.getScores('e')[i].name);
+    scoreboardText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(control.getScores('e')[i].name));
     scoreboardText.setPosition(100, 150+i*30);
     win.draw(scoreboardText); 
 
@@ -149,7 +160,7 @@ void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
     scoreboardText.setPosition(300, 150+i*30);
     win.draw(scoreboardText);
 
-    scoreboardText.setString(control.getScores('m')[i].name);
+    scoreboardText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(control.getScores('m')[i].name));
     scoreboardText.setPosition(330, 150+i*30);
     win.draw(scoreboardText); 
 
@@ -163,7 +174,7 @@ void TypeSFMLView::drawScoreboard(sf::RenderWindow & win){
     scoreboardText.setPosition(530, 150+i*30);
     win.draw(scoreboardText);
 
-    scoreboardText.setString(control.getScores('h')[i].name);
+    scoreboardText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(control.getScores('h')[i].name));
     scoreboardText.setPosition(560, 150+i*30);
     win.draw(scoreboardText); 
 
@@ -244,13 +255,10 @@ void TypeSFMLView::drawRunning(sf::RenderWindow & win, char diff){
   inputBackground.setPosition(2*800/3+10,450);
   win.draw(inputBackground);
 
+  inputText.setCharacterSize(20);
   inputText.setPosition(2*800/3+15,460);
   inputText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(inputWord));
   win.draw(inputText);
-
-
-
-
 
   // rysowanie słów z wektora w GameControl:
 
@@ -263,11 +271,27 @@ void TypeSFMLView::drawRunning(sf::RenderWindow & win, char diff){
 
     win.draw(fallingWordText);
   }
+}
+
+void TypeSFMLView::drawFinished(sf::RenderWindow & win){
+  text.setString("Uzyskano wynik: ");
+//  Text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(150,200);
+  win.draw(text);
+  text.setString(std::to_string(control.getPlayerScore()));
+//  Text.setOrigin(sf::Vector2f(0,0));
+  text.setPosition(500,200);
+  win.draw(text);
+
+  text.setString("Podaj nick:");
+  text.setPosition(150,300);
+  win.draw(text);
 
 
-
-
-
+  inputText.setCharacterSize(40);
+  inputText.setString(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(inputWord));
+  inputText.setPosition(500,300);
+  win.draw(inputText);
 
 }
 
@@ -277,12 +301,15 @@ void TypeSFMLView::handleEventMenu(sf::Event & event, sf::RenderWindow & win){
     if (event.mouseButton.button == sf::Mouse::Left)
     {
       if (fieldMenuE.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
+        control.setPlayerDiff('e');
         control.setState(RUNNING_EASY);
       }
       if (fieldMenuM.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
+        control.setPlayerDiff('m');
         control.setState(RUNNING_MEDIUM);
       }
       if (fieldMenuH.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
+        control.setPlayerDiff('h');
         control.setState(RUNNING_HARD);
       }
       if (fieldMenuS.getGlobalBounds().contains(win.mapPixelToCoords(sf::Mouse::getPosition(win)))){
@@ -308,6 +335,22 @@ void TypeSFMLView::handleEventRunning(sf::Event & event){
     control.checkWord(inputWord);
     inputWord.clear();
   }
+  handleTextInput(event);
+}
+
+void TypeSFMLView::handleEventFinished(sf::Event & event){
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter){
+    control.setPlayerName(inputWord);
+    control.saveScore();
+    control.reset();
+    control.scoresToFile();
+    control.setState(SCOREBOARD);
+  }
+  handleTextInput(event);
+}
+
+void TypeSFMLView::handleTextInput(sf::Event & event){
+
   //filtracja znaków z utf32 (bo takie zwraca event.text.unicode):
   //13 - enter (nextline lub coś w tym rodzaju)
   //261 - ą

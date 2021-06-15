@@ -28,6 +28,7 @@ sf::Text inputText;
 sf::Font font;
 
 void centerOriginText(sf::Text & t);
+void handleTextInput(sf::Event & event);
 
 public:
   TypeSFMLView(GameControl & c , Dictionary & d);
@@ -38,6 +39,7 @@ public:
   void handleEventMenu(sf::Event & event, sf::RenderWindow & win);
   void handleEventScoreboard(sf::Event & event, sf::RenderWindow & win);
   void handleEventRunning(sf::Event & event);
+  void handleEventFinished(sf::Event & event);
 
 };
 

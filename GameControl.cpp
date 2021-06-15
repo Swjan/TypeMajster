@@ -50,8 +50,6 @@ void GameControl::loadScores(){
     score = stoi(str);
     str.clear();
 
-    
-
     if(type == 'e'){
       scoresEasy[e] = Player(type, name, score);
       e++;
@@ -67,12 +65,21 @@ void GameControl::loadScores(){
       h++;
     }
 
-    
-
 
   }
-
   inFile.close();
+  //usuwanie nextline ze stringów
+  for(int i = 0; i<10; i++){
+    if((int)scoresEasy[i].name.back() == 13){
+      scoresEasy[i].name.pop_back();
+    }
+    if((int)scoresMedium[i].name.back() == 13){
+      scoresMedium[i].name.pop_back();
+    }
+    if((int)scoresHard[i].name.back() == 13){
+      scoresHard[i].name.pop_back();
+    }
+  }
 }
 
 void GameControl::debug_printScores(char diff)const{
@@ -80,6 +87,7 @@ void GameControl::debug_printScores(char diff)const{
     for(int i=0;i<10;i++){
       std::cout<<scoresEasy[i].type<<std::endl;
       std::cout<<scoresEasy[i].name<<std::endl;
+      std::cout<<scoresEasy[i].name.size()<<std::endl;
       std::cout<<scoresEasy[i].score<<std::endl;
     }
   }
@@ -87,6 +95,7 @@ void GameControl::debug_printScores(char diff)const{
     for(int i=0;i<10;i++){
       std::cout<<scoresMedium[i].type<<std::endl;
       std::cout<<scoresMedium[i].name<<std::endl;
+            std::cout<<scoresMedium[i].name.size()<<std::endl;
       std::cout<<scoresMedium[i].score<<std::endl;
     }
   }
@@ -94,6 +103,7 @@ void GameControl::debug_printScores(char diff)const{
     for(int i=0;i<10;i++){
       std::cout<<scoresHard[i].type<<std::endl;
       std::cout<<scoresHard[i].name<<std::endl;
+            std::cout<<scoresHard[i].name.size()<<std::endl;
       std::cout<<scoresHard[i].score<<std::endl;
     }
   }
@@ -232,4 +242,73 @@ void GameControl::lossCheck(){
       setState(FINISHED);
     }
   }
+}
+
+void GameControl::setPlayerName(std::string name){
+  p.name = name;
+}
+
+void GameControl::saveScore(){
+  switch (p.type){
+    case 'e':{
+      if(p.score>scoresEasy[9].score){
+        scoresEasy[9].score = p.score;
+        scoresEasy[9].name = p.name;
+        scoresEasy[9].type = 'e';
+        sortScores();
+        break;
+      }
+      break;
+    }
+    case 'm':{
+      if(p.score>scoresMedium[9].score){
+        scoresMedium[9].score = p.score;
+        scoresMedium[9].name = p.name;
+        scoresMedium[9].type = 'm';
+        sortScores();
+        break;
+      }
+      break;
+    }
+    case 'h':{
+      if(p.score>scoresHard[9].score){
+        scoresHard[9].score = p.score;
+        scoresHard[9].name = p.name;
+        scoresHard[9].type = 'h';
+        sortScores();
+        break;
+      }
+      break;
+    }
+  }
+}
+
+void GameControl::reset(){
+  fallingWords.clear();
+  p.score = 0;
+}
+
+void GameControl::scoresToFile(){
+  std::ofstream outFile;
+  outFile.open("../scoreboard.txt");
+  
+  for(int i = 0; i<10; i++){
+    outFile<<scoresEasy[i].type<<"\n";
+    outFile<<scoresEasy[i].name<<"\n";
+    outFile<<scoresEasy[i].score<<"\n";
+  }
+
+  for(int i = 0; i<10; i++){
+    outFile<<scoresMedium[i].type<<"\n";
+    outFile<<scoresMedium[i].name<<"\n";
+    outFile<<scoresMedium[i].score<<"\n";
+  }
+
+  for(int i = 0; i<10; i++){
+    outFile<<scoresHard[i].type<<"\n";
+    outFile<<scoresHard[i].name<<"\n";
+    outFile<<scoresHard[i].score<<"\n";
+  }
+
+  outFile.close();
 }

@@ -23,6 +23,9 @@ int main()
 
 
 
+
+
+
 	sf::RenderWindow window(sf::VideoMode(800, 600), "TypeMajster");
     window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(3);
@@ -101,7 +104,7 @@ int main()
           window.display();
           break;
         }
-/*
+
         case FINISHED:{
           while (window.pollEvent(event))
           {
@@ -114,7 +117,7 @@ int main()
           window.display();
           break;
         }
-        */
+      
       }
       
     }

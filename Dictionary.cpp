@@ -39,17 +39,20 @@ void Dictionary::loadWords(){
   std::cout<<"Medium words loaded: "<<medium.size()<<std::endl;
   std::cout<<"Hard words loaded: "<<hard.size()<<std::endl;
 
-//usuwanie nexline ze stringów
-  for(int i = 0; i<easy.size(); i++){
-    easy[i].pop_back();
-  }
-  for(int i = 0; i<medium.size(); i++){
-    medium[i].pop_back();
-  }
-  for(int i = 0; i<hard.size(); i++){
-    hard[i].pop_back();
-  }
 
+
+  //usuwanie nextline ze stringów
+  for(int i = 0; i<easy.size(); i++){
+    if((int)easy[i].back() == 13){
+      easy[i].pop_back();
+    }
+    if((int)easy[i].back() == 13){
+      medium[i].pop_back();
+    }
+    if((int)easy[i].back() == 13){
+      hard[i].pop_back();
+    }
+  }
 }
 
 std::string Dictionary::getWord(char diff){

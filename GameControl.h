@@ -48,6 +48,10 @@ public:
   void updateWords(char diff);
   void checkWord(std::string typedWord);
   int getPlayerScore() const;
+  void setPlayerName(std::string name);
+  void saveScore();
+  void reset();
+  void scoresToFile();
 
 
 
