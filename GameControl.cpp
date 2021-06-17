@@ -195,7 +195,7 @@ void GameControl::updateWords(char diff){
   }
 
   for(int i = 0; i<fallingWords.size();i++){
-    fallingWords[i].y = fallingWords[i].y+10;
+      fallingWords[i].y = fallingWords[i].y+10+p.score/50;
   }
   
   bool checkSpace = 0;
